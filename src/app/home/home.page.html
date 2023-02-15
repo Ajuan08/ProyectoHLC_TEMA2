@@ -1,42 +1,28 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="cabecera">
   <ion-toolbar>
-    <ion-title>
+    <ion-title class="titulo">
       Spotify_App
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-item>
-    <ion-label>Autor</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.autor"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Nombre_musica</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.nombre_musica"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Fecha_Lanzamiento</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.fecha_lanzamiento"></ion-input>
-  </ion-item>
-
-  <ion-button (click)="clickBotonInsertar()">Añadir Musica</ion-button>
-
   <h1>LISTA DE MUSICAS</h1>
   <ion-list>
-    <ion-item *ngFor="let documentMusica of arrayColeccionMusicas">
+    <ion-item *ngFor="let documentMusica of arrayColeccionMusicas" (click)="selecMusica(documentMusica)">
+
       <ion-grid>
-        <ion-row>
-          <h1>{{ documentMusica.data.autor }}</h1>
+        <ion-row class="tabla1">
+          <h2>{{ documentMusica.data.autor }}</h2>
         </ion-row>
-        <ion-row>
-          <h3>{{ documentMusica.data.nombre_musica }}</h3>
+        <ion-row class="tabla2">
+          <p>{{ documentMusica.data.nombre_musica }}</p>
         </ion-row>
-        
-        <ion-row>
+        <ion-row class="tabla3">
           <p>{{ documentMusica.data.fecha_lanzamiento }}</p>
         </ion-row>
       </ion-grid>
     </ion-item>
   </ion-list>
+  <ion-fab-button class="pag_secundaria"(click)="clickBotonInsertar()">+</ion-fab-button>
 </ion-content>

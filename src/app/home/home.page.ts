@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { Route } from '@angular/router';
 import { Musica } from '../musica';
 import { FirestoreService } from '../firestore.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,38 +11,58 @@ import { FirestoreService } from '../firestore.service';
 })
 export class HomePage {
 
-  tareaEditando: Musica;
+  idMusicaSelec: string;
+  musicaEditando: Musica;
   arrayColeccionMusicas: any = [{
     id: "",
     data: {} as Musica
   }];
-  constructor(private firestoreService: FirestoreService) {
+  
+  constructor(private firestoreService: FirestoreService, private router: Router) {
     // Crear una tarea vacia al empezar
-    this.tareaEditando = {} as Musica;
-
-    this.obtenerListaTareas();
+    this.musicaEditando = {} as Musica;
+    this.obtenerListaMusicas();
   }
 
-  clickBotonInsertar(){
-    this.firestoreService.insertar("datos",this.tareaEditando)
-    .then(()=>{
-      console.log("Musica creada correctamente");
-      this.tareaEditando = {} as Musica;
-    },(error) =>{
-      console.error(error)
-    });
-  }
-
-  obtenerListaTareas(){
-    this.firestoreService.consultar("datos").subscribe((resultadoConsultaTareas) => {
+  obtenerListaMusicas() {
+    this.firestoreService.consultar("musicas").subscribe((resultadoConsultaMusicas) => {
       this.arrayColeccionMusicas = [];
-      resultadoConsultaTareas.forEach((datosTareas: any) => {
+      resultadoConsultaMusicas.forEach((datosMusicas: any) => {
         this.arrayColeccionMusicas.push({
-          id: datosTareas.payload.doc.id,
-          data: datosTareas.payload.doc.data()
+          id: datosMusicas.payload.doc.id,
+          data: datosMusicas.payload.doc.data()
         })
       })
-    }
-    )
+    })
+  }
+
+  clickBotonInsertar() {
+      this.router.navigate(['/detalle',"nuevo"]);
+  }
+
+  selecMusica(musicaSelec) {
+    this.idMusicaSelec = musicaSelec.id;
+    this.musicaEditando.autor = musicaSelec.data.autor;
+    this.musicaEditando.nombre_musica = musicaSelec.data.nombre_musica;
+    this.musicaEditando.fecha_lanzamiento = musicaSelec.data.fecha_lanzamiento;
+    this.router.navigate(['/detalle', this.idMusicaSelec]);
+  }
+
+  clickBotonEliminar() {
+    this.firestoreService.borrar("musicas", this.idMusicaSelec).then(() => {
+      // Actualizar la lista completa
+      this.obtenerListaMusicas();
+      // Limpiar musicas de pantalla
+      this.musicaEditando = {} as Musica;
+    })
+  }
+  clicBotonModificar() {
+    console.log(this.idMusicaSelec);
+    this.firestoreService.actualizar("musicas", this.idMusicaSelec, this.musicaEditando).then(() => {
+      // Actualizar la lista completa
+      this.obtenerListaMusicas();
+      // Limpiar musicas de pantalla
+      this.musicaEditando = {} as Musica;
+    })
   }
 }
