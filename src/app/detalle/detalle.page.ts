@@ -127,73 +127,77 @@ export class DetallePage implements OnInit {
 
     await toast.present();
   }
-
   async uploadImagePicker() {
+
     const loading = await this.loadingController.create({
-      message: 'please wait...',
+      message: 'Espere...'
     });
 
     const toast = await this.toastController.create({
-      message: 'image was updated successfully',
-      duration: 3000,
-    });
-
-    this.imagePicker.hasReadPermission().then(
-      (result) => {
-        if (result == false) {
-          this.imagePicker.requestReadPermission();
-        } else {
-          this.imagePicker
-            .getPictures({
-              maximumImagesCount: 1,
-              outputType: 1,
-            })
-            .then(
-              (results) => {
-                let nombreCarpeta = 'imagenes';
-
-                for (let i = 0; i < results.length; i++) {
-                  loading.present();
-
-                  let nombreImagen = `${new Date().getTime()}`;
-
-                  this.firestoreService
-                    .uploadImage(nombreCarpeta, nombreImagen, results[i])
-
-                    .then((snapshot) => {
-                      snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        console.log('downloadURL:' + downloadURL);
-                        toast.present();
-                        loading.dismiss();
-                      });
-                    });
-                }
-              },
-              (err) => {
-                console.log(err);
-              }
-            );
-        }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-  async deleteFile(fileURL){
-
-    const toast = await this.toastController.create({
-      message:"File was deleted sucesfully",
+      message: 'La imágen fue actualizada con éxito',
       duration: 3000
     });
 
-    this.firestoreService.deleteFileFromURL(fileURL)
-      .then(() => {
-
-        toast.present();
+    this.imagePicker.hasReadPermission().then (
+      (result) => {
+        if(result == false) {
+          this.imagePicker.requestReadPermission();
+        }
+        else {
+          this.imagePicker.getPictures({
+            maximumImagesCount: 1,
+            outputType: 1
+          }).then (
+            (results) => {
+              let nombreCarpeta = "imagenes";
+              for (var i = 0; i < results.length; i++) {
+                console.log("1234");
+                loading.present();
+                console.log("Hola");
+                let nombreImagen = `${new Date().getTime()}`;
+                console.log(nombreCarpeta);
+                console.log(nombreImagen);
+                //console.log(results[i]);
+                this.firestoreService.uploadImage(nombreCarpeta, nombreImagen, results[i])
+                  .then(snapshot => {
+                    snapshot.ref.getDownloadURL()
+                      .then(downloadURL => {
+                        console.log("downloadURL: " + downloadURL);
+                        toast.present();
+                        loading.dismiss();
+                      }),
+                      (err) => {
+                        console.log("Entra")
+                        console.log(err)
+                      }
+                  }),
+                  (err) => {
+                    console.log("789")
+                    console.log(err)
+                  }
+              }
+            },
+            (err) => {
+              console.log(err)
+            }
+          );
+        }
       }, (err) => {
-        console.log(err)
-
+        console.log(err);
       });
   }
+
+  async deleteFile(fileURL) {
+    const toast = await this.toastController.create({
+      message: 'La imágen fue borrada con éxito',
+      duration: 3000
+  });
+  this.firestoreService.deleteFileFromURL(fileURL)
+    .then(() => {
+      toast.present();
+    }, (err) => {
+      console.log(err);
+    });
+  }
+
 }

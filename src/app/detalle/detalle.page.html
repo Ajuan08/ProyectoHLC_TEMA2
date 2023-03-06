@@ -25,6 +25,7 @@
 
     <ion-button class="volver" fill="clear" (click)="volver()">Volver </ion-button>
     <ion-button class="secundario" fill="clear" *ngIf="(!this.nuevo)" (click)="presentAlert()">Borrar </ion-button>
+    <ion-button class="anadirImg" fill="clear" (click)="uploadImagePicker()">añadirImg </ion-button>
     <ion-button (click)="clicBotonModificar()">{{ isNew ? 'Guardar' : 'Modificar' }} musica</ion-button>
 
   </ion-card>
