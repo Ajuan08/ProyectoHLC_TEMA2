@@ -3,6 +3,9 @@ import { Route } from '@angular/router';
 import { Musica } from '../musica';
 import { FirestoreService } from '../firestore.service';
 import { Router } from '@angular/router';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+import { CallNumber } from 'capacitor-call-number';
+
 
 @Component({
   selector: 'app-home',
@@ -17,11 +20,13 @@ export class HomePage {
     id: "",
     data: {} as Musica
   }];
+  phoneNumber: string="620765424";
   
-  constructor(private firestoreService: FirestoreService, private router: Router) {
+  constructor(private firestoreService: FirestoreService, private router: Router, private socialSharing: SocialSharing) {
     // Crear una tarea vacia al empezar
     this.musicaEditando = {} as Musica;
     this.obtenerListaMusicas();
+    
   }
 
   obtenerListaMusicas() {
@@ -65,4 +70,21 @@ export class HomePage {
       this.musicaEditando = {} as Musica;
     })
   }
+  compartir() {
+    const options = {
+      message: 'Hola esto es compartir con SocialSharing',
+      chooserTitle: 'Compartir con...'
+    };
+    
+    this.socialSharing.shareWithOptions(options)
+      .then(() => {
+        console.log('Mensaje compartido correctamente');
+      }).catch((error) => {
+        console.log('Error al compartir el mensaje: ', error);
+      });
+  }
+  async llamar() {
+    await CallNumber.call({ number: this.phoneNumber, bypassAppChooser: true });
+  }
+  
 }

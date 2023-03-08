@@ -24,5 +24,32 @@
       </ion-grid>
     </ion-item>
   </ion-list>
-  <ion-fab-button class="pag_secundaria"(click)="clickBotonInsertar()">+</ion-fab-button>
+
+  <ion-fab-button class="pag_secundaria" style="position: fixed; right: 120px; bottom: 0; margin: 65px"
+    (click)="clickBotonInsertar()"><ion-icon name="add-circle"></ion-icon>
+  
+  </ion-fab-button>
+
+  <ion-fab-button (click)="llamar()" class="call" style="position: fixed; right: 0; bottom: 0; margin: 65px">
+    <ion-icon name="call"></ion-icon>
+  </ion-fab-button>
+      
+  <ion-fab-button (click)="compartir()" id="share" style="position: fixed; right: 60px; bottom: 0; margin: 65px">
+    <ion-icon name="share"></ion-icon>
+  </ion-fab-button>
+
 </ion-content>
+<ion-toolbar>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon name="home" id="icons"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="info">
+        <ion-icon name="information-circle" id="icons"></ion-icon>
+        <ion-label>Sobre la App</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>

@@ -165,16 +165,8 @@ export class DetallePage implements OnInit {
                         console.log("downloadURL: " + downloadURL);
                         toast.present();
                         loading.dismiss();
-                      }),
-                      (err) => {
-                        console.log("Entra")
-                        console.log(err)
-                      }
-                  }),
-                  (err) => {
-                    console.log("789")
-                    console.log(err)
-                  }
+                      })
+                  })
               }
             },
             (err) => {

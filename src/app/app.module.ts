@@ -10,11 +10,13 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireModule, AngularFireStorageModule],
-  providers: [ImagePicker, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [ImagePicker, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },SocialSharing],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
